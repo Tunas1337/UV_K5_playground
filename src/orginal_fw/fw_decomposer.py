@@ -27,7 +27,7 @@ class FwDecompozer:
    
    def save_part3(self, filename):
       output = open(filename, 'wb')
-      self.file.seek(0xe074, 0) # this would be 57300 bytes in
+      self.file.seek(self.vector_table_address + self.vector_table_size + 0xe074, 0) # this would be 57300 bytes in
       output.write(self.file.read())
       output.close()
 

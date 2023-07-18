@@ -25,12 +25,12 @@ add_custom_command(OUTPUT ${ORGINAL_FW_VECTORS_OBJ} ${ORGINAL_FW_REST0_OBJ} ${OR
    COMMAND arm-none-eabi-objcopy -I binary -O elf32-littlearm -B arm --rename-section .data=.org_bootloader ${ORGINAL_FW_REST0_BIN} ${ORGINAL_FW_REST0_OBJ}
    COMMAND arm-none-eabi-objcopy -I binary -O elf32-littlearm -B arm --rename-section .data=.org_fw_up_to_dfb4 ${ORGINAL_FW_REST1_BIN} ${ORGINAL_FW_REST1_OBJ}
    COMMAND arm-none-eabi-objcopy -I binary -O elf32-littlearm -B arm --rename-section .data=.org_fw_rest_from_e074 ${ORGINAL_FW_REST2_BIN} ${ORGINAL_FW_REST2_OBJ}
-   DEPENDS ${ORGINAL_FW_VECTORS_BIN} ${ORGINAL_FW_REST0_BIN} ${ORGINAL_FW_REST1_BIN}
+   DEPENDS ${ORGINAL_FW_VECTORS_BIN} ${ORGINAL_FW_REST0_BIN} ${ORGINAL_FW_REST1_BIN} ${ORGINAL_FW_REST2_BIN}
    COMMENT "generating vector table and fw object files"
 )
 
 add_custom_target(generate_obj_files
-   DEPENDS ${ORGINAL_FW_VECTORS_OBJ} ${ORGINAL_FW_REST0_OBJ} ${ORGINAL_FW_REST1_OBJ}
+   DEPENDS ${ORGINAL_FW_VECTORS_OBJ} ${ORGINAL_FW_REST0_OBJ} ${ORGINAL_FW_REST1_OBJ} ${ORGINAL_FW_REST2_OBJ}
 )
 
 add_library(${LIB_NAME} OBJECT)
@@ -41,12 +41,14 @@ target_sources(${LIB_NAME} PRIVATE
    ${ORGINAL_FW_VECTORS_OBJ}
    ${ORGINAL_FW_REST0_OBJ}
    ${ORGINAL_FW_REST1_OBJ}
+   ${ORGINAL_FW_REST2_OBJ}
 )
 
 target_link_libraries(${LIB_NAME}
    ${CMAKE_CURRENT_BINARY_DIR}/${ORGINAL_FW_VECTORS_OBJ}
    ${CMAKE_CURRENT_BINARY_DIR}/${ORGINAL_FW_REST0_OBJ}
    ${CMAKE_CURRENT_BINARY_DIR}/${ORGINAL_FW_REST1_OBJ}
+   ${CMAKE_CURRENT_BINARY_DIR}/${ORGINAL_FW_REST2_OBJ}
 )
 
 set_target_properties(${LIB_NAME} PROPERTIES BOOTLOADER_BIN_PATH ${CMAKE_CURRENT_BINARY_DIR}/${ORGINAL_FW_REST0_BIN})
