@@ -19,10 +19,23 @@ SECTIONS
      . = ALIGN(4);
     } >FLASH
 
-    .org_fw_rest :
+    .org_fw_up_to_dfb4 :
     {
       . = ALIGN(4);
-      KEEP(*(.org_fw_rest))
+      KEEP(*(.org_fw_up_to_dfb4))
+    } > FLASH
+
+    /* Add a section 0xc0 bytes long to make the next section start at 0xe074 */
+    .extraSection :
+    {
+      . = ALIGN(4);
+      . += 0xc0; 
+    } > FLASH
+
+    .org_fw_rest_from_e074 :
+    {
+      . = ALIGN(4);
+      KEEP(*(.org_fw_rest_from_e074))
     } > FLASH
 
     /*

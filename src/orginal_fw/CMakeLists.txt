@@ -8,11 +8,14 @@ set(ORGINAL_FW_VECTORS_OBJ org_vectors.o)
 set(ORGINAL_FW_REST0_BIN org_bootloader.bin)
 set(ORGINAL_FW_REST0_OBJ org_bootloader.o)
 
-set(ORGINAL_FW_REST1_BIN org_fw_rest.bin)
-set(ORGINAL_FW_REST1_OBJ org_fw_rest.o)
+set(ORGINAL_FW_REST1_BIN org_fw_up_to_dfb4.bin)
+set(ORGINAL_FW_REST1_OBJ org_fw_up_to_dfb4.o)
+
+set(ORGINAL_FW_REST2_BIN org_fw_rest_from_e074.bin)
+set(ORGINAL_FW_REST2_OBJ org_fw_rest_from_e074.o)
 
 add_custom_command(OUTPUT ${ORGINAL_FW_VECTORS_BIN} ${ORGINAL_FW_REST0_BIN} ${ORGINAL_FW_REST1_BIN}
-   COMMAND python ${CMAKE_CURRENT_SOURCE_DIR}/fw_decomposer.py 48 4096 ${CMAKE_CURRENT_SOURCE_DIR}/${ORGINAL_FW_BIN} ${ORGINAL_FW_VECTORS_BIN} ${ORGINAL_FW_REST0_BIN} ${ORGINAL_FW_REST1_BIN}
+   COMMAND python ${CMAKE_CURRENT_SOURCE_DIR}/fw_decomposer.py 48 4096 ${CMAKE_CURRENT_SOURCE_DIR}/${ORGINAL_FW_BIN} ${ORGINAL_FW_VECTORS_BIN} ${ORGINAL_FW_REST0_BIN} ${ORGINAL_FW_REST1_BIN} ${ORGINAL_FW_REST2_BIN}
    DEPENDS ${ORGINAL_FW_BIN}
    COMMENT "parsing orginal fw ${ORGINAL_FW_BIN}"
 )
@@ -20,7 +23,8 @@ add_custom_command(OUTPUT ${ORGINAL_FW_VECTORS_BIN} ${ORGINAL_FW_REST0_BIN} ${OR
 add_custom_command(OUTPUT ${ORGINAL_FW_VECTORS_OBJ} ${ORGINAL_FW_REST0_OBJ} ${ORGINAL_FW_REST1_OBJ}
    COMMAND arm-none-eabi-objcopy -I binary -O elf32-littlearm -B arm --rename-section .data=.org_vectors ${ORGINAL_FW_VECTORS_BIN} ${ORGINAL_FW_VECTORS_OBJ}
    COMMAND arm-none-eabi-objcopy -I binary -O elf32-littlearm -B arm --rename-section .data=.org_bootloader ${ORGINAL_FW_REST0_BIN} ${ORGINAL_FW_REST0_OBJ}
-   COMMAND arm-none-eabi-objcopy -I binary -O elf32-littlearm -B arm --rename-section .data=.org_fw_rest ${ORGINAL_FW_REST1_BIN} ${ORGINAL_FW_REST1_OBJ}
+   COMMAND arm-none-eabi-objcopy -I binary -O elf32-littlearm -B arm --rename-section .data=.org_fw_up_to_dfb4 ${ORGINAL_FW_REST1_BIN} ${ORGINAL_FW_REST1_OBJ}
+   COMMAND arm-none-eabi-objcopy -I binary -O elf32-littlearm -B arm --rename-section .data=.org_fw_rest_from_e074 ${ORGINAL_FW_REST2_BIN} ${ORGINAL_FW_REST2_OBJ}
    DEPENDS ${ORGINAL_FW_VECTORS_BIN} ${ORGINAL_FW_REST0_BIN} ${ORGINAL_FW_REST1_BIN}
    COMMENT "generating vector table and fw object files"
 )

@@ -3,12 +3,11 @@ EXTERN(VectorTable)
 
 MEMORY
 {
-    RAM (rwx) : ORIGIN = 0x2000138C, LENGTH = 256
+    RAM (rwx) : ORIGIN = 0x2000138C, LENGTH = 300
     FLASH (rx)  : ORIGIN = 0x00000000, LENGTH = 60K
 }
 
 _estack = 0x20001388;
-
 
 SECTIONS
 {
@@ -20,11 +19,25 @@ SECTIONS
      . = ALIGN(4);
     } >FLASH
 
-    .org_fw_rest :
+    .org_fw_up_to_dfb4 :
     {
       . = ALIGN(4);
-      KEEP(*(.org_fw_rest))
+      KEEP(*(.org_fw_up_to_dfb4))
     } > FLASH
+
+    /* Add a section 0xc0 bytes long to make the next section start at 0xe074 */
+    .extraSection :
+    {
+      . = ALIGN(4);
+      . += 0xc0; 
+    } > FLASH
+
+    .org_fw_rest_from_e074 :
+    {
+      . = ALIGN(4);
+      KEEP(*(.org_fw_rest_from_e074))
+    } > FLASH
+
     /*
     .org_vectors :
     {
@@ -43,6 +56,8 @@ SECTIONS
         KEEP (*(.init))
         KEEP (*(.fini))
         . = ALIGN(4);
+        /* __udivsi3 = __wrap___udivsi3; */
+
     } >FLASH
 
     .preinit_array     :
@@ -86,5 +101,8 @@ SECTIONS
         *(.bss)       
       _ebss = .;
     } >RAM
-    
+
+      /DISCARD/ :
+  {
+  }    
 }
