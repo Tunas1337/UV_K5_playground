@@ -1,7 +1,7 @@
-set(NAME spectrum_fagci)
+set(NAME rssi_sbar_hot)
 set(MCU_TARGET_FILES_DIR ../mcu_target_common)
 
-add_executable(${NAME}
+add_executable(${NAME}  
         main.cpp
         hardware/hardware.cpp
         dp32g030.s
@@ -11,7 +11,7 @@ target_link_libraries(${NAME}
         orginal_fw
         uv_k5_system
         lcd
-        radio
+        views
 )
 
 target_include_directories(${NAME} PUBLIC
@@ -28,13 +28,11 @@ target_compile_definitions(${NAME} PRIVATE
 
 target_compile_options(${NAME} PRIVATE
         ${COMPILER_OPTIONS}
-        -flto
 )
 
 target_link_options(${NAME} PRIVATE
         #-print-multi-lib
         -T ${CMAKE_CURRENT_SOURCE_DIR}/memory.ld
-        -flto
         -mcpu=cortex-m0
         -mthumb
         -mfpu=auto
