@@ -29,7 +29,11 @@ SECTIONS
     .extraSection :
     {
       . = ALIGN(4);
-      . += 0xc0; 
+      FILL(0);
+      KEEP (*(SORT(.init_array.*)))
+      KEEP (*(.init_array*))
+      . += 0xc0;    /* expand to full size after inserting the code */
+      FILL(NONE);
     } > FLASH
 
     .org_fw_rest_from_e074 :
@@ -65,13 +69,6 @@ SECTIONS
       __preinit_array_start = .;
       KEEP (*(.preinit_array*))
       __preinit_array_end = .;
-    } >FLASH
-    .init_array :
-    {
-      __init_array_start = .;
-      KEEP (*(SORT(.init_array.*)))
-      KEEP (*(.init_array*))
-      __init_array_end = .;
     } >FLASH
     .fini_array :
     {
