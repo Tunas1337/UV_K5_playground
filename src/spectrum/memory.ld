@@ -52,8 +52,6 @@ SECTIONS
         . = ALIGN(4);
         *(.text)   
         *(.text*) 
-        *(.rodata)
-        *(.rodata*)
         KEEP (*(.init))
         KEEP (*(.fini))
         . = ALIGN(4);
