@@ -65,6 +65,13 @@ SECTIONS
       KEEP (*(.preinit_array*))
       __preinit_array_end = .;
     } >FLASH
+    .init_array :
+    {
+      __init_array_start = .;
+      KEEP (*(SORT(.init_array.*)))
+      KEEP (*(.init_array*))
+      __init_array_end = .;
+    } >FLASH
     .fini_array :
     {
       PROVIDE_HIDDEN (__fini_array_start = .);
