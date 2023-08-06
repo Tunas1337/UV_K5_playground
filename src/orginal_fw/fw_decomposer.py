@@ -11,7 +11,7 @@ class FwDecompozer:
       self.file.seek(self.vector_table_address, 0)
       output.write(self.file.read(self.vector_table_size))
       output.close()
-# After the vector table, the three parts are: the bootloader, the firmware up to dfb4 and the firmware from e074 onwards.
+# After the vector table, the three parts are: the bootloader, the firmware up to dfb4 and the firmware from e008 onwards.
    def save_part1(self, filename):
       output = open(filename, 'wb')
       self.file.seek(0)
@@ -27,7 +27,7 @@ class FwDecompozer:
    
    def save_part3(self, filename):
       output = open(filename, 'wb')
-      self.file.seek(self.vector_table_address + self.vector_table_size + 0xe074, 0) # this would be 57300 bytes in
+      self.file.seek(self.vector_table_address + self.vector_table_size + 0xe008, 0) # this would be 57352 bytes in
       output.write(self.file.read())
       output.close()
 

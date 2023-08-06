@@ -29,10 +29,8 @@ SECTIONS
     .extraSection :
     {
       . = ALIGN(4);
-      FILL(0);
-      KEEP (*(SORT(.init_array.*)))
-      KEEP (*(.init_array*))
-      . += 0xc0;    /* expand to full size after inserting the code */
+      *(.rodata)
+      *(.rodata*)
     } > FLASH
 
     .org_fw_rest_from_e074 :
