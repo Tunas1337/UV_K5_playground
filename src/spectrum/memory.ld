@@ -33,7 +33,6 @@ SECTIONS
       KEEP (*(SORT(.init_array.*)))
       KEEP (*(.init_array*))
       . += 0xc0;    /* expand to full size after inserting the code */
-      FILL(NONE);
     } > FLASH
 
     .org_fw_rest_from_e074 :
