@@ -2,20 +2,22 @@
 #include "hardware/hardware.hpp"
 #include "registers.hpp"
 #include "uv_k5_display.hpp"
-#include "rssi_printer.hpp"
+#include "rssi_sbar.hpp"
 #include <string.h>
 
 Hardware::THardware Hw;
+const System::TOrgFunctions& Fw = System::OrgFunc_01_26;
+const System::TOrgData& FwData = System::OrgData_01_26;
 
 int main()
 {
-    IRQ_RESET();
+    Fw.IRQ_RESET();
     return 0;
 }
 
 extern "C" void Reset_Handler()
 {
-    IRQ_RESET();
+    Fw.IRQ_RESET();
 }
 
 extern "C" void SysTick_Handler()
@@ -29,9 +31,9 @@ extern "C" void SysTick_Handler()
    }
 
    static unsigned int u32StupidCounter = 1;
-   if((!(u32StupidCounter++ % 15) && u32StupidCounter > 200)) // exit key
+   if((!(u32StupidCounter++ % 10) && u32StupidCounter > 200)) // exit key
    {
-      CRssiPrinter::Handle();
+      CRssiPrinter::Handle(Fw, FwData);
    }
-    IRQ_SYSTICK();
+    Fw.IRQ_SYSTICK();
 }
